@@ -29,17 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Sticky navbar
         let header = document.querySelector("header");
         if (header) {
             header.classList.toggle("sticky", window.scrollY > 100);
         }
 
+        // remove toggle icon and navbar
         if (menuIcon && navbar) {
             menuIcon.classList.remove("fa-xmark");
             navbar.classList.remove("active");
         }
     };
 
+    // scroll reveal
     ScrollReveal({
         distance: "80px",
         duration: 2000,
@@ -51,28 +54,30 @@ document.addEventListener('DOMContentLoaded', () => {
     ScrollReveal().reveal(".home-contact h1, .about-img", { origin: "left" });
     ScrollReveal().reveal(".home-contact p, .about-content", { origin: "right" });
 
+    // typed JS
     const typed = new Typed(".multiple-text", {
-        strings: ["Full Stack Engineer", "Web Developer", "Mobile Developer"],
+        strings: ["Software Engineer", "Data Scientist", "FullStack Developer"],
         typeSpeed: 70,
         backSpeed: 70,
         backDelay: 1000,
         loop: true,
     });
 
+    // setting number input
     const mobileNumberInput = document.getElementById("mobileNumber");
 
     if (mobileNumberInput) {
         mobileNumberInput.addEventListener("input", function (event) {
-            let value = this.value.replace(/\D/g, "");
+            let value = this.value.replace(/\D/g, ""); // Hanya mempertahankan digit
 
             if (value.length > 12) {
-                value = value.substr(0, 12);
+                value = value.substr(0, 12); // Mengambil hanya 12 digit pertama
             }
 
             let formattedValue = "";
             for (let i = 0; i < value.length; i++) {
                 if (i > 0 && i % 4 === 0) {
-                    formattedValue += "_";
+                    formattedValue += "_"; // Tambahkan underscore setiap 4 digit
                 }
                 formattedValue += value[i];
             }
@@ -81,24 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('more-link')) {
-            e.preventDefault();
-            const desc = e.target.closest('.work-desc');
-            const fullText = desc.getAttribute('data-full-text');
-            desc.innerHTML = `${fullText} <a href="#" class="less-link">less</a>`;
-        } else if (e.target.classList.contains('less-link')) {
-            e.preventDefault();
-            const desc = e.target.closest('.work-desc');
-            const truncatedText = desc.getAttribute('data-truncated-text');
-            desc.innerHTML = `${truncatedText}... <a href="#" class="more-link">more</a>`;
-        }
-    });
-
     const buttons = document.querySelectorAll('.experience-buttons .btn');
     const columns = document.querySelectorAll('.experience-column');
     const loadMoreBtn = document.querySelector('.load-more');
 
+    // Function to switch display content based on button click
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             buttons.forEach(btn => btn.classList.remove('active'));
@@ -115,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const experienceBoxes = column.querySelectorAll('.experience-box');
                 experienceBoxes.forEach((box, index) => {
-                    if (filter === 'all' || filter === 'project') {
+                    if (filter === 'project') {
                         box.style.display = index < 3 ? 'block' : 'none';
                     } else {
                         box.style.display = 'block';
@@ -123,20 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            if (filter === 'all' || filter === 'project') {
-                const experienceBoxes = document.querySelectorAll(`.experience-column.${filter} .experience-box`);
-                if (experienceBoxes.length > 3) {
-                    loadMoreBtn.style.display = 'block';
-                    loadMoreBtn.textContent = 'Load More';
-                } else {
-                    loadMoreBtn.style.display = 'none';
-                }
-            } else {
-                loadMoreBtn.style.display = 'none';
-            }
+            // Update load more button visibility
+            loadMoreBtn.style.display = filter === 'project' ? 'block' : 'none';
+
         });
     });
 
+    // Function to load more experience boxes
     loadMoreBtn.addEventListener('click', () => {
         const activeButton = document.querySelector('.experience-buttons .btn.active');
         const filter = activeButton.getAttribute('data-filter');
@@ -146,8 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
             box.style.display = 'block';
         });
 
+        if (filter === 'all') {
+            loadMoreBtn.style.display = 'none';
+        }
+
         if (loadMoreBtn.textContent === 'Load More') {
-            loadMoreBtn.textContent = 'Load Less';
+            loadMoreBtn.textContent = 'Show Less';
         } else {
             experienceBoxes.forEach((box, index) => {
                 if (index >= 3) {
@@ -157,17 +146,4 @@ document.addEventListener('DOMContentLoaded', () => {
             loadMoreBtn.textContent = 'Load More';
         }
     });
-
-    const workDescriptions = document.querySelectorAll('.work-desc');
-    workDescriptions.forEach(desc => {
-        const words = desc.textContent.split(' ');
-        if (words.length > 30) {
-            const truncatedWords = words.slice(0, 100).join(' ');
-            const fullText = words.join(' ');
-            desc.setAttribute('data-truncated-text', `${truncatedWords}...`);
-            desc.setAttribute('data-full-text', `${fullText}`);
-            desc.innerHTML = `${truncatedWords}... <a href="#" class="more-link">more</a>`;
-        }
-    });
-
 });
