@@ -22,7 +22,7 @@ This portfolio website is designed to provide a modern, intuitive, and interacti
 No installation is required as this project is built with HTML and CSS. Simply clone the repository and open `index.html` in your browser.
 
 ```bash
-git clone https://github.com/your-username/portfolio.git
+git clone https://github.com/nielshn/portfolio.git
 ```
 
 ## Usage
